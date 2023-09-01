@@ -103,7 +103,7 @@ func AddRoutes(r *gin.Engine) {
 			CreatedAt: time.Now(),
 		}
 
-		err = insertSongLog(ctx, userSong, songEndedAt-songStartedAt)
+		err = insertSongLog(ctx, &userSong, songEndedAt-songStartedAt)
 		if err != nil {
 			ginutil.SendWrappedInternalServerError(ctx, err)
 			return
@@ -112,6 +112,29 @@ func AddRoutes(r *gin.Engine) {
 		ctx.JSON(http.StatusOK, gin.H{
 			"error": nil,
 		})
+	})
+
+	r.POST("/song/logs", func(ctx *gin.Context) {
+		userId := 1
+
+		var req SongLogsReqiest
+
+		err := ctx.BindJSON(&req)
+		if err != nil {
+			ginutil.SendWrappedInternalServerError(ctx, err)
+			return
+		}
+
+		err = insertSongLogs(ctx, int64(userId), req.Logs)
+		if err != nil {
+			ginutil.SendWrappedInternalServerError(ctx, err)
+			return
+		}
+
+		ctx.JSON(http.StatusOK, gin.H{
+			"error": nil,
+		})
+
 	})
 
 }

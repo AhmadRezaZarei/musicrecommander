@@ -21,6 +21,17 @@ type Song struct {
 	AlbumArtist  *string `json:"album_artist"`
 }
 
+type ReqeuestSongLog struct {
+	Song
+	SongStartedAt int64 `json:"song_started_at"`
+	SongEndedAt   int64 `json:"song_ended_at"`
+	Timestamp     int64 `json:"timestamp"`
+}
+
+type SongLogsReqiest struct {
+	Logs []*ReqeuestSongLog
+}
+
 type HistorySong struct {
 	ID           int64   `json:"id"`
 	Title        string  `json:"title"`

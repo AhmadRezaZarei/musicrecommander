@@ -1,7 +1,6 @@
 package ginutil
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/AhmadRezaZarei/musicrecommander/modules/util"
@@ -21,7 +20,6 @@ func SendErrorWithStatusCode(ctx *gin.Context, statusCode int, err *util.MainErr
 }
 
 func SendWrappedInternalServerError(ctx *gin.Context, err error) {
-	fmt.Println(err)
 	ctx.JSON(http.StatusInternalServerError, gin.H{
 		"error": &util.MainError{
 			Type:    util.ErrInternalServerError,
