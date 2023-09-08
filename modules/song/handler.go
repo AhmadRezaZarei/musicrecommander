@@ -63,12 +63,6 @@ func AddRoutes(r *gin.Engine) {
 		artistName := req.FormValue("artist_name")
 		albumArtist := req.FormValue("album_artist")
 
-		// durationPlayed, err := strconv.Atoi(req.FormValue("duration_played"))
-		// if err != nil {
-		// 	ginutil.SendWrappedInternalServerError(ctx, err)
-		// 	return
-		// }
-
 		songStartedAt, err := strconv.Atoi(req.FormValue("song_started_at"))
 		if err != nil {
 			ginutil.SendWrappedInternalServerError(ctx, err)
@@ -117,7 +111,7 @@ func AddRoutes(r *gin.Engine) {
 	r.POST("/song/logs", func(ctx *gin.Context) {
 		userId := 1
 
-		var req SongLogsReqiest
+		var req SongLogsRequest
 
 		err := ctx.BindJSON(&req)
 		if err != nil {

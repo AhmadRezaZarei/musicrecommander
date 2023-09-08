@@ -8,7 +8,6 @@ import (
 type Song struct {
 	ID           int64   `json:"id"`
 	Title        string  `json:"title"`
-	TrackNumber  int     `json:"track_number"`
 	Year         int     `json:"year"`
 	Duration     int64   `json:"duration"`
 	Data         string  `json:"date"`
@@ -21,15 +20,15 @@ type Song struct {
 	AlbumArtist  *string `json:"album_artist"`
 }
 
-type ReqeuestSongLog struct {
+type RequestSongLog struct {
 	Song
 	SongStartedAt int64 `json:"song_started_at"`
 	SongEndedAt   int64 `json:"song_ended_at"`
 	Timestamp     int64 `json:"timestamp"`
 }
 
-type SongLogsReqiest struct {
-	Logs []*ReqeuestSongLog
+type SongLogsRequest struct {
+	Logs []*RequestSongLog `json:"logs"`
 }
 
 type HistorySong struct {

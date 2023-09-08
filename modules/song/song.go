@@ -55,31 +55,45 @@ func insertSongLog(ctx context.Context, song *UsersSong, durationPlayed int) err
 	return nil
 }
 
-func insertSongLogs(ctx context.Context, userId int64, logs []*ReqeuestSongLog) error {
+func insertSongLogs(ctx context.Context, userId int64, logs []*RequestSongLog) error {
 
 	for _, log := range logs {
 
-		err := insertSongLog(ctx, &UsersSong{
-			SongId:     log.ID,
-			UserId:     userId,
-			Title:      log.Title,
-			Year:       log.Year,
-			Duration:   log.Duration,
-			Data:       log.Data,
-			AlbumId:    log.AlbumId,
-			AlbumName:  log.AlbumName,
-			ArtistId:   log.ArtistId,
-			ArtistName: log.ArtistName,
-			Composer: sql.NullString{
+		composer := sql.NullString{
+			Valid: false,
+		}
+		if log.Composer != nil {
+			composer = sql.NullString{
 				String: *log.Composer,
 				Valid:  true,
-			},
-			AlbumArtist: sql.NullString{
+			}
+		}
+
+		albumArtist := sql.NullString{
+			Valid: false,
+		}
+		if log.AlbumArtist != nil {
+			albumArtist = sql.NullString{
 				String: *log.AlbumArtist,
 				Valid:  true,
-			},
-			CreatedAt: time.Now(),
-		}, int(log.SongEndedAt)-int(log.SongEndedAt))
+			}
+		}
+
+		err := insertSongLog(ctx, &UsersSong{
+			SongId:      log.ID,
+			UserId:      userId,
+			Title:       log.Title,
+			Year:        log.Year,
+			Duration:    log.Duration,
+			Data:        log.Data,
+			AlbumId:     log.AlbumId,
+			AlbumName:   log.AlbumName,
+			ArtistId:    log.ArtistId,
+			ArtistName:  log.ArtistName,
+			Composer:    composer,
+			AlbumArtist: albumArtist,
+			CreatedAt:   time.Now(),
+		}, int(log.SongEndedAt)-int(log.SongStartedAt))
 		if err != nil {
 			return err
 		}
