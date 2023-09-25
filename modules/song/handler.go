@@ -17,9 +17,9 @@ func AddRoutes(r *gin.Engine) {
 
 		userId := 1
 		file, err := ctx.FormFile("file")
-
 		if err == nil {
-			ctx.SaveUploadedFile(file, filepath.Join("songs", file.Filename))
+			// TODO unique name
+			ctx.SaveUploadedFile(file, filepath.Join("songs", file.Filename+".mp3"))
 		}
 
 		req := ctx.Request
