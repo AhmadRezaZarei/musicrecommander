@@ -9,6 +9,7 @@ import (
 	limits "github.com/gin-contrib/size"
 	"github.com/joho/godotenv"
 
+	"github.com/AhmadRezaZarei/musicrecommander/database"
 	"github.com/AhmadRezaZarei/musicrecommander/modules/song"
 	"github.com/gin-gonic/gin"
 )
@@ -24,6 +25,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	database.Migrate()
 
 	port := os.Getenv("PORT")
 
