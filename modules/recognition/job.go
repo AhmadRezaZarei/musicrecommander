@@ -53,7 +53,7 @@ func StartJob() error {
 					var idn IdentifiedSong
 					result := tx.Model(&IdentifiedSong{}).Where(&IdentifiedSong{IdInRecognizeService: match.MatchedSongId}).Find(&idn).Limit(1)
 					if result.Error != nil {
-						return fmt.Errorf("unexpected error on existance check : %v", err)
+						return fmt.Errorf("unexpected error on exist check : %v", err)
 					}
 
 					if result.RowsAffected == 0 {
@@ -71,7 +71,10 @@ func StartJob() error {
 						}
 					}
 
-					
+					err = db.Raw("UPDATE users_songs SET identified_song_id = ?, is_identified = 1 WHERE id = ?", idn.ID, song.ID).Error
+					if err != nil {
+						return fmt.Errorf("unexpected error on update users_songs")
+					}
 
 					return nil
 				})
