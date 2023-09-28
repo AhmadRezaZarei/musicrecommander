@@ -1,0 +1,2 @@
+ALTER TABLE users_songs ADD filename VARCHAR(255) NULL DEFAULT NULL;
+ALTER TABLE users_songs ADD is_identified TINYINT NOT NULL DEFAULT '0';

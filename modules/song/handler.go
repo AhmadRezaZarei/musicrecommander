@@ -24,9 +24,11 @@ func AddRoutes(r *gin.Engine) {
 			return
 		}
 
+		filename := ""
 		file, err := ctx.FormFile("file")
 		if err == nil {
-			ctx.SaveUploadedFile(file, filepath.Join("songs", getUniqueFilename(userId, songId, file.Filename)))
+			filename = getUniqueFilename(userId, songId, file.Filename)
+			ctx.SaveUploadedFile(file, filepath.Join("songs", filename))
 		}
 
 		title := req.FormValue("title")
@@ -99,7 +101,12 @@ func AddRoutes(r *gin.Engine) {
 				String: albumArtist,
 				Valid:  true,
 			},
-			CreatedAt: time.Now(),
+			Filename: sql.NullString{
+				String: filename,
+				Valid:  filename != "",
+			},
+			IsIdentified: false,
+			CreatedAt:    time.Now(),
 		}
 
 		err = insertSongLog(ctx, &userSong, playTimestamp, songEndedAt-songStartedAt)

@@ -49,20 +49,22 @@ type HistorySong struct {
 }
 
 type UsersSong struct {
-	ID          int64
-	SongId      int64
-	UserId      int64
-	Title       string
-	Year        int
-	Duration    int64
-	Data        string
-	AlbumId     int64
-	AlbumName   string
-	ArtistId    int64
-	ArtistName  string
-	Composer    sql.NullString
-	AlbumArtist sql.NullString
-	CreatedAt   time.Time
+	ID           int64
+	SongId       int64
+	UserId       int64
+	Title        string
+	Year         int
+	Duration     int64
+	Data         string
+	AlbumId      int64
+	AlbumName    string
+	ArtistId     int64
+	ArtistName   string
+	Composer     sql.NullString
+	AlbumArtist  sql.NullString
+	Filename     sql.NullString
+	IsIdentified bool
+	CreatedAt    time.Time
 }
 
 type SongLog struct {
