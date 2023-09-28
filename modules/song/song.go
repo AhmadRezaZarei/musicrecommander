@@ -9,7 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func insertSongLog(ctx context.Context, song *UsersSong, durationPlayed int) error {
+func insertSongLog(ctx context.Context, song *UsersSong, playTimestamp int, durationPlayed int) error {
 
 	db, err := dbutil.GormDB(ctx)
 	if err != nil {
@@ -44,6 +44,7 @@ func insertSongLog(ctx context.Context, song *UsersSong, durationPlayed int) err
 		SongId:         recordId,
 		UserId:         song.UserId,
 		DurationPlayed: durationPlayed,
+		Timestamp:      playTimestamp,
 		CreatedAt:      time.Now(),
 	}
 
@@ -93,7 +94,7 @@ func insertSongLogs(ctx context.Context, userId int64, logs []*RequestSongLog) e
 			Composer:    composer,
 			AlbumArtist: albumArtist,
 			CreatedAt:   time.Now(),
-		}, int(log.SongEndedAt)-int(log.SongStartedAt))
+		}, int(log.Timestamp), int(log.SongEndedAt)-int(log.SongStartedAt))
 		if err != nil {
 			return err
 		}

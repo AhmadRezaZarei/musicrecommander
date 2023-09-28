@@ -1,0 +1,1 @@
+ALTER TABLE song_logs ADD timestamp BIGINT NOT NULL

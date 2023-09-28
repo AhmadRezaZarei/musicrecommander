@@ -18,7 +18,6 @@ func AddRoutes(r *gin.Engine) {
 		userId := 1
 		file, err := ctx.FormFile("file")
 		if err == nil {
-			// TODO unique name
 			ctx.SaveUploadedFile(file, filepath.Join("songs", file.Filename+".mp3"))
 		}
 
@@ -75,6 +74,12 @@ func AddRoutes(r *gin.Engine) {
 			return
 		}
 
+		playTimestamp, err := strconv.Atoi(req.FormValue("timestamp"))
+		if err != nil {
+			ginutil.SendWrappedInternalServerError(ctx, err)
+			return
+		}
+
 		userSong := UsersSong{
 			SongId:     int64(songId),
 			UserId:     int64(userId),
@@ -97,7 +102,7 @@ func AddRoutes(r *gin.Engine) {
 			CreatedAt: time.Now(),
 		}
 
-		err = insertSongLog(ctx, &userSong, songEndedAt-songStartedAt)
+		err = insertSongLog(ctx, &userSong, playTimestamp, songEndedAt-songStartedAt)
 		if err != nil {
 			ginutil.SendWrappedInternalServerError(ctx, err)
 			return

@@ -70,5 +70,6 @@ type SongLog struct {
 	UserId         int64
 	SongId         int64
 	DurationPlayed int
+	Timestamp      int
 	CreatedAt      time.Time
 }
