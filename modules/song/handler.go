@@ -15,18 +15,18 @@ func AddRoutes(r *gin.Engine) {
 
 	r.POST("/song/log", func(ctx *gin.Context) {
 
-		userId := 1
-		file, err := ctx.FormFile("file")
-		if err == nil {
-			ctx.SaveUploadedFile(file, filepath.Join("songs", file.Filename+".mp3"))
-		}
+		userId := 1 // TODO get userId from auth
 
 		req := ctx.Request
 		songId, err := strconv.Atoi(req.FormValue("id"))
-
 		if err != nil {
 			ginutil.SendWrappedInternalServerError(ctx, err)
 			return
+		}
+
+		file, err := ctx.FormFile("file")
+		if err == nil {
+			ctx.SaveUploadedFile(file, filepath.Join("songs", getUniqueFilename(userId, songId, file.Filename)))
 		}
 
 		title := req.FormValue("title")

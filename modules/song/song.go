@@ -3,6 +3,7 @@ package song
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"time"
 
 	"github.com/AhmadRezaZarei/musicrecommander/modules/dbutil"
@@ -102,4 +103,8 @@ func insertSongLogs(ctx context.Context, userId int64, logs []*RequestSongLog) e
 	}
 
 	return nil
+}
+
+func getUniqueFilename(userId int, songId int, songFilename string) string {
+	return fmt.Sprintf("%d_%d_%s_%d.mp3", userId, songId, songFilename, time.Now().Unix())
 }
