@@ -3,10 +3,11 @@ package recognition
 import "time"
 
 type IdentifiedSong struct {
-	ID        int64
-	name      string
-	meta      string
-	CreatedAt time.Time
+	ID                   int64
+	Name                 string
+	Meta                 string
+	IdInRecognizeService string
+	CreatedAt            time.Time
 }
 
 type RecognitionResult struct {
@@ -44,4 +45,5 @@ type SongMatchResult struct {
 	IsMatched       bool
 	MatchedSongMeta string
 	MatchedSongId   string
+	SongName        string
 }

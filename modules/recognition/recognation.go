@@ -66,7 +66,6 @@ func recognizeSong(filename string) (*SongMatchResult, error) {
 			bestOffset = offset
 			matched = m
 		}
-
 	}
 
 	if maxConf > 0.2 {
@@ -74,6 +73,7 @@ func recognizeSong(filename string) (*SongMatchResult, error) {
 			IsMatched:       true,
 			MatchedSongMeta: matched.SongMeta,
 			MatchedSongId:   matched.SongID,
+			SongName:        matched.SongName,
 		}, nil
 	}
 

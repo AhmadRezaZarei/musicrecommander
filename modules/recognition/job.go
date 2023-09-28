@@ -3,10 +3,12 @@ package recognition
 import (
 	"context"
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/AhmadRezaZarei/musicrecommander/modules/dbutil"
 	"github.com/go-co-op/gocron"
+	"gorm.io/gorm"
 )
 
 func StartJob() error {
@@ -43,6 +45,42 @@ func StartJob() error {
 			}
 
 			if match.IsMatched {
+
+				// check existance
+
+				err := db.Transaction(func(tx *gorm.DB) error {
+
+					var idn IdentifiedSong
+					result := tx.Model(&IdentifiedSong{}).Where(&IdentifiedSong{IdInRecognizeService: match.MatchedSongId}).Find(&idn).Limit(1)
+					if result.Error != nil {
+						return fmt.Errorf("unexpected error on existance check : %v", err)
+					}
+
+					if result.RowsAffected == 0 {
+
+						idn = IdentifiedSong{
+							Meta:                 match.MatchedSongMeta,
+							CreatedAt:            time.Now(),
+							IdInRecognizeService: match.MatchedSongId,
+							Name:                 match.SongName,
+						}
+
+						err := tx.Create(&idn).Error
+						if err != nil {
+							return fmt.Errorf("expected error on insert idn: %v", err)
+						}
+					}
+
+					
+
+					return nil
+				})
+
+				if err != nil {
+					log.Fatalf("unexpected error on transaction: %v", err)
+					return
+				}
+
 				// insert a record to identified songs table
 			}
 
