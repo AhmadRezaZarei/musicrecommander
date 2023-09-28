@@ -10,7 +10,8 @@ import (
 	"github.com/joho/godotenv"
 
 	"github.com/AhmadRezaZarei/musicrecommander/database"
-	"github.com/AhmadRezaZarei/musicrecommander/modules/song"
+	"github.com/AhmadRezaZarei/musicrecommander/modules/recognition"
+	"github.com/AhmadRezaZarei/musicrecommander/modules/songlog"
 	"github.com/gin-gonic/gin"
 )
 
@@ -40,8 +41,16 @@ func main() {
 	})
 
 	// start: Add routes ----------
-	song.AddRoutes(r)
+	songlog.AddRoutes(r)
 	// end: ------------------
+
+	// start: Add jobs
+	err = recognition.StartJob()
+	if err != nil {
+		panic(err)
+	}
+
+	// end: -------------
 
 	r.Run(fmt.Sprintf("0.0.0.0:%s", port)) // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }

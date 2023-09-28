@@ -1,4 +1,4 @@
-package song
+package songlog
 
 import (
 	"database/sql"
